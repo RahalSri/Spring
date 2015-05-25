@@ -41,4 +41,6 @@ Steps to demonstrate
    
 2. Then uncomment the codes between "//Start: transaction." and "//End: transaction." comments in TransactionTest.java.
    Then run and query tables. Notice the debug console how transactions are rollbacked.
+   
+Note : you can import Spring/lib directory to run this project which is uploaded to git.
 	
