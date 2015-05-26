@@ -34,6 +34,14 @@ Proxy
 A proxy is the object created after applying advice to the target object. As far as outside client objects are
 concerned , the target object (pre-AOP) and the proxy object(post-AOP) are the same .
 
+In Spring AOP, 4 type of advices are supported :
+
+1.Before advice – Run before the method execution
+2.After returning advice – Run after the method returns a result
+3.After throwing advice – Run after the method throws an exception
+4.Around advice – Run around the method execution, combine all three advices above.
+
+This example demonstrate how to use Around advice.
 ***************************************************************************************
 Use necessary jars in Spring/lib folder
 *************************************************************************************** 
