@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+        
+    <bean id="operaService" class="com.rahal.aop.service.OperaService" />
+ 
+	<bean id="audienceService" class="com.rahal.aop.service.AudienceService" />
+	
+	<!-- Create advice bean by injecting audienceService-->
+	<bean id="audienceAroundAdvice" class="com.rahal.aop.service.AudienceAroundAdvice">
+		<property name="audience" ref="audienceService" />
+	</bean>
+ 
+ 	<!-- Defined the pointcut.You can use regular expression in value field below. -->
+ 	<bean id="performPointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+		<property name="patterns"> 
+			<list>
+        		<value>.*perform()</value>
+        		<value>.*performBadPerformance()</value>
+      		</list>
+		</property>
+
+	</bean>
+ 
+ 	<!-- Create aspect bean by joining advice bean and pointcut bean -->
+ 	<bean id="audienceAroundAdvicsor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="audienceAroundAdvice" />
+		<property name="pointcut" ref="performPointcut" />
+	</bean>
+	
+	<!-- Apply advice to the target service and create proxy service -->
+	<bean id="operaServiceProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="operaService" />
+ 
+		<property name="interceptorNames">
+			<list>
+				<value>audienceAroundAdvicsor</value>
+			</list>
+		</property>
+	</bean>
+
+	
+</beans>

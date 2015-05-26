@@ -15,8 +15,8 @@
 	<bean id="pooledDataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 		<property name="url" value="jdbc:sqlserver://localhost:1433;DatabaseName=home;responseBuffering=adaptive" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="username" value="sa" />
+		<property name="password" value="bsharp98" />
 		<property name="initialSize" value="5" />
 		<property name="maxIdle" value="50" />
 		<property name="testOnBorrow" value="true" />
