@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config/>
+	<context:property-placeholder location="app.properties"/>
+	
+	<bean name="customerRepository" 
+	      class="com.rahal.repository.HibernateCustomerRepositoryImpl" >
+	</bean>
+	
+	
+	<!-- Autowire -->      
+	<bean name="customerServiceAutowire"
+	      class="com.rahal.service.CustomerServiceImpl" 
+	      autowire="byType">
+	      <!-- Property Injection -->
+	      <!-- property name="customerRepository" ref="customerRepository" /--> 
+	      <!-- Constructor Injection -->
+	      
+	 </bean>
+	 
+	 <!-- Property Injection -->
+	 <bean name="customerServicePropInjection"
+	      class="com.rahal.service.CustomerServiceImpl" >
+	      <property name="customerRepository" ref="customerRepository" /> 
+	 </bean>
+	 
+	 <!-- Constructor Injection -->
+	 <bean name="customerServiceConsInjection"
+	      class="com.rahal.service.CustomerServiceImpl" >
+	      <constructor-arg index="0" ref="customerRepository" />
+	 </bean>
+</beans>
