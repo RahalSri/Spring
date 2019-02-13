@@ -1,77 +1,72 @@
-drop database if exists userservice;
-
-create database userservice;
-
-use userservice;
-
-create table permission (id int primary key auto_increment, permission_name varchar(50) unique key not null);
-
-create table role (id int primary key auto_increment, role_name varchar(50) unique key not null);
-
-create table role_permission(id int primary key auto_increment, role_id int, foreign key(role_id) 
-references role(id),permission_id int, foreign key(permission_id) references permission(id));
-
-create table users (id int primary key auto_increment, first_name varchar(50) not null, last_name varchar(50),
-email_id varchar(50) not null, password varchar(1000), mobile varchar(20), country varchar(50), 
-user_type varchar(20));
-
-create table role_users (id int primary key auto_increment, role_id int, foreign key(role_id) references role(id),
-user_id int, foreign key(user_id) references users(id));
-
-insert into permission (permission_name) values ('view_permission');
-
-insert into permission (permission_name) values ('create_role');
-insert into permission (permission_name) values ('edit_role');
-insert into permission (permission_name) values ('view_role');
-insert into permission (permission_name) values ('delete_role');
-
-insert into permission (permission_name) values ('assign_permissions_to_role');
-insert into permission (permission_name) values ('view_permissions_by_role');
-
-insert into permission (permission_name) values ('create_users');
-insert into permission (permission_name) values ('edit_users');
-insert into permission (permission_name) values ('view_users');
-insert into permission (permission_name) values ('delete_users');
-
-insert into permission (permission_name) values ('assign_users_to_role');
-insert into permission (permission_name) values ('view_users_by_role');
-
-insert into role (role_name) values ('Administrator');
-
-insert into role_permission (role_id, permission_id) values (1,1); 
-insert into role_permission (role_id, permission_id) values (1,2); 
-insert into role_permission (role_id, permission_id) values (1,3); 
-insert into role_permission (role_id, permission_id) values (1,4); 
+CREATE TABLE `oauth_client_details` (
+  `client_id` varchar(255) NOT NULL,
+  `resource_ids` varchar(255) DEFAULT NULL,
+  `client_secret` varchar(255) DEFAULT NULL,
+  `scope` varchar(255) DEFAULT NULL,
+  `authorized_grant_types` varchar(255) DEFAULT NULL,
+  `web_server_redirect_uri` varchar(255) DEFAULT NULL,
+  `authorities` varchar(255) DEFAULT NULL,
+  `access_token_validity` int(11) DEFAULT NULL,
+  `refresh_token_validity` int(11) DEFAULT NULL,
+  `additional_information` varchar(4096) DEFAULT NULL,
+  `autoapprove` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-insert into role_permission (role_id, permission_id) values (1,5); 
-insert into role_permission (role_id, permission_id) values (1,6); 
-insert into role_permission (role_id, permission_id) values (1,7); 
-insert into role_permission (role_id, permission_id) values (1,8); 
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ref_id` varchar(36) NOT NULL,
+  `first_name` varchar(45) DEFAULT NULL,
+  `last_name` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ref_id_UNIQUE` (`ref_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
-insert into role_permission (role_id, permission_id) values (1,9); 
-insert into role_permission (role_id, permission_id) values (1,10); 
-insert into role_permission (role_id, permission_id) values (1,11); 
-insert into role_permission (role_id, permission_id) values (1,12); 
 
-insert into role_permission (role_id, permission_id) values (1,13); 
+CREATE TABLE `role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ref_id` varchar(36) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ref_id_UNIQUE` (`ref_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
-insert into users (first_name, last_name, email_id, password, mobile, country, user_type) values 
-('Kite', 'Danie', 'kite_d@gmail.com','$2y$12$U9VFvF/e4XtvXv8qQn7GmOOlAOnXAb0Al.qTOvbI3Gi0yMyiqaYNW',
-'+916789401494','USA', 'super_admin');
 
-insert into users (first_name, last_name, email_id, password, mobile, country, user_type) values 
-('William', 'John', 'william_j@gmail.com','$2y$12$U9VFvF/e4XtvXv8qQn7GmOOlAOnXAb0Al.qTOvbI3Gi0yMyiqaYNW','+918939052159','USA','admin');
+CREATE TABLE `permission` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
-insert into role_users (role_id,user_id) values (1,2);
+CREATE TABLE `role_permission` (
+  `role_id` bigint(20) NOT NULL,
+  `permission_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`role_id`,`permission_id`),
+  KEY `fk_role_permission_1_idx` (`role_id`),
+  KEY `fk_role_permission_2_idx` (`permission_id`),
+  CONSTRAINT `fk_role_permission_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_role_permission_2` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-select * from users where email_id='kite_d@gmail.com';
-select * from users where email_id='william_j@gmail.com';
+CREATE TABLE `user_role` (
+  `user_id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `fk_user_role_1_idx` (`user_id`),
+  KEY `fk_user_role_2_idx` (`role_id`),
+  CONSTRAINT `fk_user_role_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_role_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-select p.permission_name from users u
-inner join role_users r_u on u.id=r_u.user_id
-inner join role r on r_u.role_id=r.id
-inner join role_permission r_p on r_p.role_id=r.id
-inner join permission p on p.id=r_p.permission_id where u.email_id='william_j@gmail.com';
 
-update users set password='$2a$10$eUB5vV/xWXrcR61TqcWRXOCfl37r3fk.UXNXEzx7xTol5inz5xZ.2';
+
+oauth_client_service 
+====================
+'client_id', NULL, '$2a$10$z75DqOg/3ntr8N5AnBIPyuca5uWdI3OVRCQ0Mv9IOlo2TOtzfhzpa', 'trust,read,write', 'password,authorization_code,refresh_token,client_credentials,implicit', NULL, NULL, '3600', '18000', NULL, '1'
+
+
+

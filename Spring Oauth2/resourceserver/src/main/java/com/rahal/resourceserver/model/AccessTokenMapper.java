@@ -10,9 +10,6 @@ public class AccessTokenMapper {
 	private String id;
 	private String first_name;
 	private String last_name;
-	private String mobile;
-	private String country;
-	private String user_type;
 
 	public String getEmail_id() {
 		return email_id;
@@ -53,29 +50,4 @@ public class AccessTokenMapper {
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
 	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getUser_type() {
-		return user_type;
-	}
-
-	public void setUser_type(String user_type) {
-		this.user_type = user_type;
-	}
-
 }

@@ -1,36 +1,29 @@
 package com.rahal.autorizationserver.entities;
 
-import java.util.ArrayList;
 import java.util.Collection;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 public class CustomUser extends User {
 
 	private static final long serialVersionUID = 1L;
-	private String id;
+	private Long id;
 	private String first_name;
 	private String last_name;
-	private String mobile;
-	private String country;
-	private String user_type;
 
-	public CustomUser(UserEntity user) {
-		super(user.getEmail_id(), user.getPassword(), user.getGrantedAuthorities());
+	public CustomUser(com.rahal.autorizationserver.entities.User user,
+			Collection<GrantedAuthority> grantedAuthorities) {
+		super(user.getEmail(), user.getPassword(), grantedAuthorities);
 		this.id = user.getId();
-		this.first_name = user.getFirst_name();
-		this.last_name = user.getLast_name();
-		this.mobile = user.getMobile();
-		this.country = user.getCountry();
-		this.user_type = user.getUser_type();
+		this.first_name = user.getFirstName();
+		this.last_name = user.getLastName();
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -48,30 +41,6 @@ public class CustomUser extends User {
 
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getUser_type() {
-		return user_type;
-	}
-
-	public void setUser_type(String user_type) {
-		this.user_type = user_type;
 	}
 
 }
